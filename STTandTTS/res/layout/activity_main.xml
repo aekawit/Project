@@ -1,0 +1,49 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/textView1"
+    android:layout_toLeftOf="@+id/textView1"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="30dp" >
+
+    <requestFocus />
+
+    <ImageButton
+        android:id="@+id/btnSpeak"
+        android:layout_width="240dp"
+        android:layout_height="89dp"
+        android:layout_margin="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.08"
+        android:src="@android:drawable/ic_btn_speak_now" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="ข้อความที่พูด" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="167dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="พูด" />
+
+    <!-- <TextView -->
+    <!-- android:id="@+id/txtText" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_marginLeft="10dp" -->
+    <!-- android:layout_marginRight="10dp" -->
+    <!-- android:layout_marginTop="10dp" -->
+    <!-- android:textAppearance="?android:attr/textAppearanceLarge" /> -->
+
+</LinearLayout>

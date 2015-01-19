@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Celsius to Farenheit"
+        android:textSize="30dp" />
+
+    <ImageButton
+        android:id="@+id/btnSpeak"
+        android:layout_width="194dp"
+        android:layout_height="80dp"
+        android:layout_margin="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.02"
+        android:gravity="center"
+        android:src="@android:drawable/ic_btn_speak_now" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="188dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="ค่า เซลเซียส"
+        android:numeric="integer"
+        android:singleLine="true" />
+
+    <!-- <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.03"
+        android:gravity="center"
+        android:text="แปลงค่าเป็น พาเรนไฮน์" /> -->
+
+    <!-- tv_result -->
+
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="26dp" />
+
+    <!-- <Button
+        android:id="@+id/button"
+        android:layout_width="198dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:text="พูด" /> -->
+
+</LinearLayout>
