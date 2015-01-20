@@ -34,10 +34,10 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	private final String NAMESPACE = "http://axisversion.sample";
-	private final String URL = "http://192.168.50.177/axis2/services/Version.VersionHttpSoap11Endpoint";
-	private final String SOAP_ACTION = "urn:getVersion";
-	private final String METHOD_NAME = "getVersion";
+	private final String NAMESPACE = "http://tempuri.org/";
+	private final String URL = "http://10.80.4.232:49270/Service.asmx";
+	private final String SOAP_ACTION = "http://tempuri.org/HelloWorld";
+	private final String METHOD_NAME = "HelloWorld";
 	private String TAG = "aeke";
 	private static String celcius;
 	private static String fahren;
@@ -55,8 +55,6 @@ public class MainActivity extends Activity {
 		
 	    final static int INTENT_CHECK_TTS = 0;
 	    TextToSpeech tts;
-	    //EditText et;
-	    // Button btn;    
 	//
 	//
 	
@@ -123,13 +121,9 @@ public class MainActivity extends Activity {
          	}
          
          if (et.getText().length() != 0 && et.getText().toString() != "") {
-				//Get the text control value
 				celcius = et.getText().toString();
-				//Create instance for AsyncCallWS
 				AsyncCallWS task = new AsyncCallWS();
-				//Call execute 
 				task.execute();
-			//If text control is empty
 				System.out.println(celcius);
 			} else {
 				tv.setText("กรุณากรอกค่า เซลเซียส");
@@ -166,33 +160,21 @@ public class MainActivity extends Activity {
     
     
 	public void getFahrenheit(String celsius) {
-		//Create request
 		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-		//Property which holds input parameters
 		PropertyInfo celsiusPI = new PropertyInfo();
-		//Set Name
 		celsiusPI.setName("Celsius");
-		//Set Value
 		celsiusPI.setValue(celsius);
-		//Set dataType
 		celsiusPI.setType(double.class);
-		//Add the property to request object
 		request.addProperty(celsiusPI);
-		//Create envelope
 		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
 				SoapEnvelope.VER11);
 		envelope.dotNet = true;
-		//Set output SOAP object
 		envelope.setOutputSoapObject(request);
-		//Create HTTP call object
 		HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
 
 		try {
-			//Invole web service
 			androidHttpTransport.call(SOAP_ACTION, envelope);
-			//Get the response
 			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
-			//Assign it to fahren static variable
 			fahren = response.toString();
 
 		} catch (Exception e) {
