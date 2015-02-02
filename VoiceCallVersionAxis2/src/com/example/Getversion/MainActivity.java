@@ -34,19 +34,18 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
+	
+	
 	private final String NAMESPACE = "http://tempuri.org/";
-	private final String URL = "http://10.80.4.232:49270/Service.asmx";
-	private final String SOAP_ACTION = "http://tempuri.org/HelloWorld";
-	private final String METHOD_NAME = "HelloWorld";
+	private final String URL = "http://10.80.41.56:8080/webservice.asmx";
+	private final String SOAP_ACTION = "http://tempuri.org/on";
+	private final String METHOD_NAME = "on";
 	private String TAG = "aeke";
-	private static String celcius;
-	private static String fahren;
+	private static String TextRequest;
+	private static String TextResponse;
 	Button b;
-
 	TextView tv;
 	EditText et;
-
-
 	//ส่วนของ ปุ่ม เสียงเป็นข้อความ ข้อความเป็นเสียง
 	//		
 		protected static final int RESULT_SPEECH = 1;
@@ -57,14 +56,10 @@ public class MainActivity extends Activity {
 	    TextToSpeech tts;
 	//
 	//
-	
-	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-
       //ส่วนของ ปุ่ม เสียงเป็นข้อความ ข้อความเป็นเสียง	
       		//		
       		 	edText = (TextView) findViewById(R.id.editText); //เปลี่นนตอน อ่านค่า ฟาเรนไฮน์
@@ -74,7 +69,7 @@ public class MainActivity extends Activity {
       	                Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
       	                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
       	                try {
-      	                    startActivityForResult(intent, RESULT_SPEECH);
+      	                    startActivityForResult(intent,RESULT_SPEECH);
       	                    // tv.setText("");  //เปลี่นนตอน อ่านค่า ฟาเรนไฮน์
       	                } catch (ActivityNotFoundException a) {
       	                    Toast t = Toast.makeText(getApplicationContext(),
@@ -90,17 +85,13 @@ public class MainActivity extends Activity {
       	        startActivityForResult(intent, INTENT_CHECK_TTS);
       	    //
       	    //
-	        
         
     }
-    
     
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-    
-    
     
     
     @Override
@@ -114,19 +105,20 @@ public class MainActivity extends Activity {
      switch (requestCode) {
      case RESULT_SPEECH: {
          if (resultCode == RESULT_OK && null != data) {
-             ArrayList<String> text = data
-                     .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+             ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
              edText.setText(text.get(0));
 
          	}
          
          if (et.getText().length() != 0 && et.getText().toString() != "") {
-				celcius = et.getText().toString();
+        	 TextRequest = et.getText().toString();
 				AsyncCallWS task = new AsyncCallWS();
 				task.execute();
-				System.out.println(celcius);
+				System.out.println(TextRequest);
 			} else {
-				tv.setText("กรุณากรอกค่า เซลเซียส");
+				tv.setText("กรุณากรอกค่า ใส่คำสั่ง");
+				//String str = tv.getText().toString();
+	            //tts.speak(str, TextToSpeech.QUEUE_ADD, null);
 			}
          
          
@@ -147,52 +139,17 @@ public class MainActivity extends Activity {
          }
      }
     }
-
-    
-    
-    public void onDestroy() {
-        super.onDestroy();
-        if(tts != null)
-            tts.shutdown();
-    }
-    
-    
-    
-    
-	public void getFahrenheit(String celsius) {
-		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
-		PropertyInfo celsiusPI = new PropertyInfo();
-		celsiusPI.setName("Celsius");
-		celsiusPI.setValue(celsius);
-		celsiusPI.setType(double.class);
-		request.addProperty(celsiusPI);
-		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
-				SoapEnvelope.VER11);
-		envelope.dotNet = true;
-		envelope.setOutputSoapObject(request);
-		HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
-
-		try {
-			androidHttpTransport.call(SOAP_ACTION, envelope);
-			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
-			fahren = response.toString();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private class AsyncCallWS extends AsyncTask<String, Void, Void> {
+    private class AsyncCallWS extends AsyncTask<String, Void, Void> {
 		@Override
 		protected Void doInBackground(String... params) {
 			Log.i(TAG, "doInBackground");
-			getFahrenheit(celcius);
+			getTextResponse(TextRequest);
 			return null;
 		}
 		@Override
 		protected void onPostExecute(Void result) {
 			Log.i(TAG, "onPostExecute");
-			tv.setText(fahren);
+			tv.setText(TextResponse);
 			
 			String str = tv.getText().toString();
             tts.speak(str, TextToSpeech.QUEUE_ADD, null);
@@ -207,6 +164,36 @@ public class MainActivity extends Activity {
 			Log.i(TAG, "onProgressUpdate");
 		}
 	}
+    public void onDestroy() {
+        super.onDestroy();
+        if(tts != null)
+            tts.shutdown();
+    }
+    
+	public void getTextResponse(String TextRequest) {
+		SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+		PropertyInfo TextRequestPI = new PropertyInfo();
+		TextRequestPI.setName("TextRequest");
+		TextRequestPI.setValue(TextRequest);
+		TextRequestPI.setType(double.class);
+		request.addProperty(TextRequestPI);
+		SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+				SoapEnvelope.VER11);
+		envelope.dotNet = true;
+		envelope.setOutputSoapObject(request);
+		HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+
+		try {
+			androidHttpTransport.call(SOAP_ACTION, envelope);
+			SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
+			TextResponse = response.toString();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
     
 
 }
